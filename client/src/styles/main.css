@@ -1,0 +1,114 @@
+/* Colors based on the image */
+:root {
+    --primary: #3A5F0B; /* Dark green from logo */
+    --secondary: #5E8C31; /* Medium green */
+    --accent: #F5DEB3; /* Wheat/beige background */
+    --background: #F9F9F9; /* Light background */
+    --text-primary: #333333;
+    --text-secondary: #666666;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Layout styles */
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+  
+  .main-content {
+    width: 100%;
+    max-width: 448px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    margin-top: 48px;
+  }
+  
+  .title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .subtitle {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  
+  /* Language selector styles */
+  .language-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .language-button {
+    width: 100%;
+    text-align: left;
+    border: 2px solid var(--secondary);
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .language-button:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .language-code {
+    background-color: var(--accent);
+    color: var(--secondary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-weight: 600;
+  }
+  
+  /* Footer styles */
+  .footer {
+    width: 100%;
+    max-width: 448px;
+    text-align: center;
+    margin-top: auto;
+    padding: 32px 0;
+  }
+  
+  .footer-text {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  
+  .footer-small {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .footer-accent {
+    color: var(--accent);
+  }
