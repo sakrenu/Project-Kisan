@@ -1,6 +1,5 @@
 import '../styles/globals.css';
-import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
+import ClientWrapper from '../components/ClientWrapper';
 
 export const metadata = {
   title: 'Project Kisan',
@@ -15,9 +14,9 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#059669" />
       </head>
       <body>
-        <I18nextProvider i18n={i18n}>
+        <ClientWrapper>
           {children}
-        </I18nextProvider>
+        </ClientWrapper>
       </body>
     </html>
   );
