@@ -1,9 +1,8 @@
 {
-  "login": {
-    "title": "Project Kisan",
-    "subtitle": "Smart Farming for Indian Farmers",
-    "google": "Continue with Google",
-    "mobile": "Continue with Mobile",
-    "terms": "By continuing, you agree to our Terms and Privacy Policy"
-  }
+  "welcome": "Welcome to Project Kisan",
+  "select_language": "Please select your preferred language",
+  "login": "Login",
+  "create_account": "Create Account",
+  "terms_privacy": "By continuing, you agree to our Terms and Privacy Policy",
+  "ministry_support": "Supported by Ministry of Agriculture & Farmers' Welfare"
 }
