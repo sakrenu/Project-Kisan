@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-gray-800;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Farmer-friendly button styles */
+.btn-primary {
+  @apply bg-primary text-white px-6 py-3 rounded-lg shadow-md hover:bg-primary-dark transition-all;
+}
+
+/* Touch target sizes */
+button, a {
+  @apply min-h-[48px] min-w-[120px];
+}
