@@ -19,5 +19,42 @@
     "send_otp": "Send OTP",
     "verify_otp": "Verify OTP",
     "signin_with_google": "Sign in with Google"
+  },
+
+  "navbar": {
+    "dashboard": "Dashboard",
+    "services": "Services",
+    "schemes": "Schemes",
+    "market": "Market"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, Farmer!",
+    "daily_tip": "Today is a good day for your wheat crops",
+    "ai_assistant": {
+      "title": "Krishi AI Assistant",
+      "description": "Get instant answers in your local language via call or chat",
+      "call": "Call Now",
+      "chat": "Chat Instead →",
+      "queries": [
+        "What's the tomato price today?",
+        "How to treat yellow leaves?",
+        "Subsidy for tractor?"
+      ]
+    },
+    "voice_banner": {
+      "title": "Voice-first Experience",
+      "subtitle": "Tap the mic to ask anything in your local language"
+    },
+    "services": {
+      "title": "All Services",
+      "market_analysis": {
+        "title": "Market Analysis",
+        "description": "Prices, trends, strategies"
+      },
+      "scheme_navigator": {
+        "title": "Scheme Navigator",
+        "description": "Govt schemes info"
+      }
   }
+}
 }

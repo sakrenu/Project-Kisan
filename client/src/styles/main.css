@@ -3,7 +3,7 @@
     --primary: #3A5F0B; /* Dark green from logo */
     --secondary: #5E8C31; /* Medium green */
     --accent: #F5DEB3; /* Wheat/beige background */
-    --background: #F9F9F9; /* Light background */
+    --background: #f9f9f9; /* Light background */
     --text-primary: #333333;
     --text-secondary: #666666;
   }
@@ -14,6 +14,17 @@
     color: var(--text-primary);
     margin: 0;
     padding: 0;
+  
+    /* ✨ Added background image with overlay */
+    background-image: linear-gradient(
+        rgba(58, 95, 11, 0.6), /* dark green overlay for farmer vibe */
+        rgba(58, 95, 11, 0.6)
+      ),
+      url('/images/login-background.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   
   /* Layout styles */
@@ -28,7 +39,7 @@
   .main-content {
     width: 100%;
     max-width: 448px;
-    background: white;
+    background: rgba(255, 255, 255, 0.85); /* semi-transparent white for readability */
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 32px;
@@ -105,16 +116,16 @@
   
   .footer-small {
     font-size: 12px;
-    color: #666;
+    color: #eff0f1;
     margin-top: 4px;
   }
   
   .footer-accent {
     color: var(--accent);
   }
-
+  
   /* Auth styles */
-.auth-options {
+  .auth-options {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -235,3 +246,4 @@
     font-size: 14px;
     margin-top: 8px;
   }
+  

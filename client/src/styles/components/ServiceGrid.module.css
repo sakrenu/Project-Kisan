@@ -1,0 +1,51 @@
+.serviceGrid {
+    margin-bottom: 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1rem;
+  }
+  
+  .gridContainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  
+  .serviceCard {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+  }
+  
+  .serviceCard:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .serviceIcon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .serviceTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #166534;
+    margin-bottom: 0.25rem;
+  }
+  
+  .serviceDescription {
+    font-size: 0.875rem;
+    color: #4B5563;
+  }
+  
+  @media (min-width: 768px) {
+    .gridContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
