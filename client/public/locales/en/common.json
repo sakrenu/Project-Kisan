@@ -1,8 +1,23 @@
 {
   "welcome": "Welcome to Project Kisan",
   "select_language": "Please select your preferred language",
-  "login": "Login",
+  "login_text": "Login",
   "create_account": "Create Account",
   "terms_privacy": "By continuing, you agree to our Terms and Privacy Policy",
-  "ministry_support": "Supported by Ministry of Agriculture & Farmers' Welfare"
+  "ministry_support": "Supported by Ministry of Agriculture & Farmers' Welfare",
+
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to continue",
+    "phone_title": "Sign in with Phone",
+    "google_title": "Sign in with Google",
+    "or": "OR",
+    "phone_label": "Phone Number",
+    "phone_placeholder": "Enter 10-digit number",
+    "otp_label": "OTP",
+    "otp_placeholder": "Enter 6-digit OTP",
+    "send_otp": "Send OTP",
+    "verify_otp": "Verify OTP",
+    "signin_with_google": "Sign in with Google"
+  }
 }
