@@ -1,0 +1,69 @@
+.navbar {
+    background-color: #447C47;
+    color: white;
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .appName {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .appNamePart1 {
+    color: white;
+  }
+  
+  .appNamePart2 {
+    color: #B8F1B0;
+  }
+  
+  .menu {
+    display: none;
+    gap: 1.5rem;
+  }
+  
+  .menuItem {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .menuItem:hover {
+    color: #B8F1B0;
+  }
+  
+  .userActions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .iconButton {
+    padding: 0.5rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+  }
+  
+  .iconButton:hover {
+    background-color: #295135;
+  }
+  
+  @media (min-width: 768px) {
+    .menu {
+      display: flex;
+    }
+  }

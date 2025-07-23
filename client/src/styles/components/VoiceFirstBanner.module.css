@@ -1,0 +1,32 @@
+.voiceBanner {
+    background-color: #3B82F6;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .bannerTitle {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  .bannerText {
+    font-size: 0.875rem;
+    opacity: 0.9;
+  }
+  
+  .micButton {
+    background-color: white;
+    color: #3B82F6;
+    padding: 1rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+  }
+  
+  .micButton:hover {
+    background-color: #EFF6FF;
+  }

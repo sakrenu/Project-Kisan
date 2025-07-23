@@ -1,0 +1,68 @@
+.card {
+    background: linear-gradient(to bottom, white, #F8FFF8);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E5E7EB;
+  }
+  
+  .cardTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cardDescription {
+    color: #4B5563;
+    margin-bottom: 1rem;
+  }
+  
+  .queryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .queryPill {
+    background-color: #E5F5E0;
+    color: #166534;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .micIcon {
+    color: #6B7280;
+    margin-left: 0.25rem;
+  }
+  
+  .actionContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .callButton {
+    background-color: #166534;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+  }
+  
+  .callButton:hover {
+    background-color: #0E5423;
+  }
+  
+  .chatButton {
+    color: #166534;
+    text-decoration: underline;
+  }

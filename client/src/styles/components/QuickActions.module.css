@@ -1,0 +1,35 @@
+.quickActions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .actionButton {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+  }
+  
+  .actionButton:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .actionIcon {
+    background-color: #D1FAE5;
+    color: #166534;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .actionLabel {
+    font-size: 0.75rem;
+    color: #374151;
+  }
