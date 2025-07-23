@@ -1,14 +1,27 @@
-'use client'
-import { signIn } from 'next-auth/react'
+'use client';
+import { useTranslation } from 'react-i18next';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { app } from '../../../firebase.config';
+
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export default function GoogleButton() {
+  const { t } = useTranslation();
+
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      // User is signed in, will be handled by auth state listener
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+    }
+  };
+
   return (
-    <button 
-      onClick={() => signIn('google')}
-      className="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-xl font-semibold text-lg flex items-center justify-center"
-    >
-      <i className="fab fa-google mr-2"></i>
-      Continue with Google
+    <button onClick={signInWithGoogle} className="google-button">
+      <span className="google-icon"></span>
+      {t('login.signin_with_google')}
     </button>
-  )
+  );
 }
