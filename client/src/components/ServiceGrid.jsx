@@ -37,7 +37,7 @@ export default function ServiceGrid({ t }) {
   const router = useRouter();
 
   const services = [
-    { key: "market_analysis", icon: "📈" },
+    { key: "market_analysis", icon: "📈",  onClick: () => router.push("/market-trends") },
     { key: "scheme_navigator", icon: "📋" },
     { key: "store_finder", icon: "🏪" },
     { key: "krishi_guide", icon: "🌱" },
