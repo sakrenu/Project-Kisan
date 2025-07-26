@@ -8,12 +8,12 @@ export default function ServiceGrid({ t }) {
 
   const services = [
     { key: "seasonal_planning", icon: "📆", onClick: () => router.push("/seasonal-planner") },
+    { key: "market_analysis", icon: "📈",  onClick: () => router.push("/market-trends") },
     { key: "scheme_navigator", icon: "📋" },
     { key: "store_finder", icon: "🏪" },
     { key: "krishi_guide", icon: "🌱" },
     { key: "krishi_scan", icon: "🔍", onClick: () => router.push("/plant-scan") },
-    { key: "smart_alerts", icon: "🔔" },
-    { key: "local_dialects", icon: "🗣️" }
+    { key: "smart_alerts", icon: "🔔" }
   ];
 
   return (
