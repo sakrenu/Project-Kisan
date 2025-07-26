@@ -1,5 +1,14 @@
-fastapi==0.95.2
-uvicorn==0.22.0
 python-multipart==0.0.6
 python-jose==3.3.0
 passlib==1.7.4
+fastapi==0.109.1
+uvicorn==0.27.0
+python-multipart==0.0.6
+langgraph==0.0.22
+google-generativeai==0.3.2
+tensorflow==2.15.0  # or tensorflow-cpu for lighter install
+tflite-runtime==2.15.0  # For edge deployment
+Pillow==10.1.0
+cachetools==5.3.2
+numpy==1.26.3
+python-dotenv==1.0.0  # For API keys
