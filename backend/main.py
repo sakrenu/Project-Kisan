@@ -1,3 +1,5 @@
+
+
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -6,6 +8,8 @@ from langchain_core.messages import HumanMessage, AIMessage
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from agents.plant_disease_agent import run_plant_agent
+from graph.crop_graph import build_crop_graph
+from routes import gemini_convo_agent  # ✅ only after routes folder is added
 import uvicorn
 # Add these new imports at top
 from agents.kannada_agent import KannadaMarketAgent
@@ -20,9 +24,13 @@ from utils.market_utils import MarketDataFetcher, PriceAnalyzer
 
 app = FastAPI()
 
+# ✅ Register routes
+app.include_router(gemini_convo_agent.router)
+
+# ✅ CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js dev server
+    allow_origins=["*"], # Next.js dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -149,6 +157,35 @@ async def analyze_plant(
 ):
     result = await run_plant_agent(image, prompt, lang, lat, lon)
     return result
+
+@app.post("/seasonal-plan/")
+async def seasonal_plan(
+    region: str = Form(...),
+    month: str = Form(...),
+    acres: str = Form(...),
+    water: str = Form(...),
+    lang: str = Form("en"),
+    lat: float = Form(...),
+    lon: float = Form(...),
+    user_goal: str = Form(""),
+    context: str = Form("")
+):
+    graph = build_crop_graph()
+    result = graph.invoke({
+        "region": region,
+        "month": month,
+        "acres": acres,
+        "water": water,
+        "lat": lat,
+        "lon": lon,
+        "lang": lang,
+        "user_goal": user_goal,
+        "context": context
+    })
+    return {
+        "plan": result["crop_suggestion"],
+        "motivation": result["motivation"]
+    }
 
 @app.post("/market/trends")
 async def get_quick_results(request: MarketTrendsRequest): 
@@ -334,6 +371,7 @@ async def kannada_voice_query(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

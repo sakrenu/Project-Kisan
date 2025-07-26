@@ -38,3 +38,59 @@ Additional farmer input:
     )
 
     return response.text
+# --------------------------------------------------------------------------------------------------------
+# def query_crop_planner(region, month, acres, water, weather, lang):
+#     lang_instr = "Respond in Kannada with emojis and warmth." if lang == "kn" else "Respond in English with empathy and emojis."
+
+#     prompt = f"""
+# You are a trusted Krishi Assistant. A farmer from {region} needs help for {month}. 
+# Details:
+# - Land size: {acres}
+# - Water condition: {water}
+# - Weather: {weather}
+
+# Please provide:
+# 1. 🌱 Crops to Sow or Harvest
+# 2. 🛠️ Field Prep Steps
+# 3. ☁️ Weather-aligned Tips
+# 4. 🐛 Seasonal Pest Warning
+# 5. ❤️ Realistic Motivation based on situation
+# 6. ❓ Follow-up question if info missing
+# 7. 🔗 Suggest farmer to explore Market Trends next
+
+# {lang_instr}
+# """
+
+#     model = genai.GenerativeModel("gemini-2.5-pro")
+#     response = model.generate_content(prompt)
+#     return response.text
+# -------------------------------
+def query_crop_planner(region, month, acres, water, weather, lang, goal="", context=""):
+    lang_instr = "Respond in Kannada with clarity and emojis." if lang == "kn" else "Respond in English with empathy and emojis."
+
+    prompt = f"""
+You are a smart Krishi assistant.
+
+User's goal: {goal}
+Extra info: {context}
+
+Farm Info:
+- Region: {region}
+- Month: {month}
+- Acres: {acres}
+- Water availability: {water}
+- Weather: {weather}
+
+Please respond with:
+🌱 Crops to Sow or Harvest
+🛠️ Field Prep Tips
+☁️ Weather-Aligned Warnings
+🐛 Seasonal Risks
+❤️ Motivational Quote
+❓ Follow-up Question
+
+{lang_instr}
+"""
+    model = genai.GenerativeModel("gemini-2.5-pro")
+    response = model.generate_content(prompt)
+    return response.text
