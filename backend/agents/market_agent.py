@@ -49,6 +49,8 @@ class MarketPredictionAgent:
         - "bangalore" = "Bangalore" 
         - "karnataka" = "Karnataka"
         
+        if no market or state is provided
+        use market: bangalore and state: karnataka as default.
         Examples:
         - "What is potato price in Bangalore Karnataka?" → commodity: "Potato", state: "Karnataka", market: "Bangalore"
         - "potato rates bangalore" → commodity: "Potato", state: "Karnataka", market: "Bangalore"
@@ -130,6 +132,7 @@ class MarketPredictionAgent:
 
     async def fetch_market_data(self, state: MarketAgentState) -> MarketAgentState:
         """Fetch market data if commodity info is available."""
+        print("in fetch market data")
         if state["commodity"] and state["state"] and state["market"]:
             data_result = await self.data_fetcher.get_market_data(
                 state["commodity"], state["state"], state["market"]
@@ -165,33 +168,35 @@ class MarketPredictionAgent:
         state_name = state["state"]
         
         if analysis["status"] == "success" and prediction["status"] == "success":
-            response_content = f"""📊 **Market Analysis for {commodity} in {market}, {state_name}**
-
-**Current Market Status:**
-• Current Price: ₹{analysis['current_price']}/quintal
-• Average Price: ₹{analysis['average_price']}/quintal  
-• Price Trend: {analysis['trend'].title()}
-• Market Volatility: ₹{analysis['price_volatility']}
-
-**Price Predictions:**
-🔮 **7-day forecast:** ₹{prediction['predictions']['7_days']['price']}/quintal 
-   (Change: {'+' if prediction['predictions']['7_days']['change'] >= 0 else ''}₹{prediction['predictions']['7_days']['change']})
-   Confidence: {prediction['predictions']['7_days']['confidence'].title()}
-
-🔮 **30-day forecast:** ₹{prediction['predictions']['30_days']['price']}/quintal
-   (Change: {'+' if prediction['predictions']['30_days']['change'] >= 0 else ''}₹{prediction['predictions']['30_days']['change']})
-   Confidence: {prediction['predictions']['30_days']['confidence'].title()}
-
-**💡 Recommendation:**
-{prediction['recommendation']}
-
-**📈 Market Insights:**
-• Price Range: ₹{analysis['price_range']['min']} - ₹{analysis['price_range']['max']}
-• Data Points Analyzed: {analysis['data_points']} recent entries
-• Market Stability: {'High' if analysis['price_volatility'] < 100 else 'Medium' if analysis['price_volatility'] < 200 else 'Low'}
-
-*Note: Predictions are based on historical trends and market analysis. Actual prices may vary due to weather, demand, and other market factors.*"""
-        
+            response_content = (
+        f"📊 Market Analysis for {commodity} in {market}, {state_name}<br><br>"
+        f"---<br><br>"
+        f"Current Market Status:<br>"
+        f"💰 Current Price: ₹{analysis['current_price']}/quintal<br>"
+        f"📈 Average Price: ₹{analysis['average_price']}/quintal<br>"
+        f"📊 Price Trend: {analysis['trend'].title()}<br>"
+        f"📉 Market Volatility: ₹{analysis['price_volatility']}<br><br>"
+        f"---<br><br>"
+        f"Price Predictions:<br>"
+        f"🔮 7-day forecast: ₹{prediction['predictions']['7_days']['price']}/quintal<br>"
+        f"   (Change: {'+' if prediction['predictions']['7_days']['change'] >= 0 else ''}₹{prediction['predictions']['7_days']['change']})<br>"
+        f"   Confidence: {prediction['predictions']['7_days']['confidence'].title()}<br><br>"
+        f"🔮 30-day forecast: ₹{prediction['predictions']['30_days']['price']}/quintal<br>"
+        f"   (Change: {'+' if prediction['predictions']['30_days']['change'] >= 0 else ''}₹{prediction['predictions']['30_days']['change']})<br>"
+        f"   Confidence: {prediction['predictions']['30_days']['confidence'].title()}<br><br>"
+        f"---<br><br>"
+        f"💡 Recommendation:<br>"
+        f"{prediction['recommendation']}<br><br>"
+        f"---<br><br>"
+        f"📈 Market Insights:<br>"
+        f"🔍 Price Range: ₹{analysis['price_range']['min']} - ₹{analysis['price_range']['max']}<br>"
+        f"📊 Data Points Analyzed: {analysis['data_points']} recent entries<br>"
+        f"⚖️ Market Stability: {'High' if analysis['price_volatility'] < 100 else 'Medium' if analysis['price_volatility'] < 200 else 'Low'}<br><br>"
+        f"---\n\n" # This one can remain as \n if you want a true line break, otherwise convert to <br> as well.
+        f"_Note: Predictions are based on historical trends and market analysis. <br>" # Changed to <br> here
+        f"Actual prices may vary due to weather, demand, and other market <br>" # Changed to <br> here
+        f"factors._"
+    )
         else:
             response_content = f"I encountered an issue analyzing the market data for {commodity}. Please try again or check if the commodity and location details are correct."
         

@@ -199,16 +199,16 @@ class PriceAnalyzer:
         """Generate trading recommendations based on analysis."""
         if current_price > avg_price * 1.1:
             if trend == "increasing":
-                return "Consider selling soon - prices are above average and may peak"
+                return "SELL"
             else:
                 return "Good time to sell - prices are high and trending down"
         elif current_price < avg_price * 0.9:
             if trend == "decreasing":
-                return "Wait to sell - prices are low and may drop further"
+                return "WAIT TO SELL- PRICES ARE LOW AND TRENDING DOWN"
             else:
-                return "Good time to buy/hold - prices are low and trending up"
+                return "HOLD - PRICES WILL INCREASE"
         else:
-            return f"Prices are near average - monitor {trend} trend for opportunities"
+            return f"AVERAGE PRICE"
 
 class VoiceProcessor:
     def __init__(self):
