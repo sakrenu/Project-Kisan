@@ -13,7 +13,7 @@ from routes import gemini_convo_agent  # ✅ only after routes folder is added
 import uvicorn
 # Add these new imports at top
 from agents.kannada_agent import KannadaMarketAgent
-from utils.market_utils import KannadaVoiceProcessor
+# from utils.market_utils import KannadaVoiceProcessor
 
 # Import the market prediction components
 from graph.market_graph import MarketPredictionGraph
@@ -318,7 +318,7 @@ async def get_popular_locations():
 
 # Initialize at app startup
 kannada_agent = KannadaMarketAgent()
-voice_processor = KannadaVoiceProcessor()
+
 
 # Add these new endpoints
 @app.post("/market/kannada/chat")

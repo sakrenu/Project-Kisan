@@ -249,24 +249,3 @@ class VoiceProcessor:
         except Exception as e:
             return {"status": "error", "error": str(e)}
 
-# Add this new class to the existing file
-class KannadaVoiceProcessor:
-    def __init__(self):
-        self.recognizer = sr.Recognizer()
-        self.sample_rate = 16000
-        self.chunk_size = 1024
-        
-    async def transcribe_kannada(self, audio_file: UploadFile) -> str:
-        """Convert Kannada speech to text"""
-        audio_data = await audio_file.read()
-        with sr.AudioFile(io.BytesIO(audio_data)) as source:
-            audio = self.recognizer.record(source)
-            return self.recognizer.recognize_google(audio, language="kn-IN")
-    
-    def text_to_speech(self, text: str) -> bytes:
-        """Convert Kannada text to speech"""
-        tts = gTTS(text=text, lang='kn', slow=False)
-        mp3_fp = io.BytesIO()
-        tts.write_to_fp(mp3_fp)
-        mp3_fp.seek(0)
-        return mp3_fp.read()

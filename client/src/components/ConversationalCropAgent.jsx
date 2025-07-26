@@ -282,7 +282,7 @@ export default function ConversationalCropAgent({ t }) {
       {suggestion && (
         <div className={styles.results}>
           <h3>🌾 {t('Crop Plan')}</h3>
-          <div dangerouslySetInnerHTML={{ __html: suggestion.plan.replace(/\n/g, '<br/>') }} />
+          <div dangerouslySetInnerHTML={{ __html: suggestion.plan?.replace(/\n/g, '<br/>') }} />
 
           <h4>❤️ {t('Motivation')}</h4>
           <p>{suggestion.motivation}</p>
