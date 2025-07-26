@@ -123,3 +123,18 @@ async def clear_market_session(session_id: str):
         del market_sessions[session_id]
         return {"message": f"Market session {session_id} cleared"}
     return {"message": "Session not found"}
+
+
+@app.post("/analyze-plant/")
+async def analyze_plant(
+    image: UploadFile = File(...),
+    prompt: str = Form(""),
+    lang: str = Form("en"),
+    lat: float = Form(...),
+    lon: float = Form(...)
+):
+    result = await run_plant_agent(image, prompt, lang, lat, lon)
+    return result
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
