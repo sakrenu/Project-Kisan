@@ -56,5 +56,42 @@
         "description": "Govt schemes info"
       }
   }
+}, 
+
+  "marketTrends": {
+    "title": "Market Trends & Analysis",
+    "quickAnalysis": "Quick Analysis",
+    "chatMode": "Chat Mode",
+    "selectLocation": "Select Market Location",
+    "selectCrop": "Select Crop for Analysis",
+    "loadingText": "Analyzing market trends...",
+    "marketAnalysis": "Market Analysis",
+    "recommendations": "Recommendations",
+    "currentPrice": "Current Price",
+    "averagePrice": "Average Price",
+    "priceVolatility": "Price Volatility",
+    "trend": "Trend",
+    "priceRange": "Price Range",
+    "chat": {
+      "welcome": "Ask me about market trends!",
+      "examples": [
+        "What's the current price of rice in Bangalore?",
+        "Should I sell my tomatoes now or wait?",
+        "What crops are performing well this season?"
+      ],
+      "placeholder": "Ask about market trends, prices, or farming advice...",
+      "send": "Send"
+    },
+    "fallbackMessages": {
+      "noData": "Unable to fetch current market data. Please try again later.",
+      "error": "Sorry, I encountered an error. Please try again."
+    },
+    "recommendationDefaults": [
+      "Check local market conditions",
+      "Monitor price trends",
+      "Consult with local traders"
+    ]
+  }
 }
-}
+  
+

@@ -37,7 +37,7 @@ const MarketTrends = ({ t }) => {
   }, []);
 
 
-  const renderPriceChart = () => {
+ const renderPriceChart = () => {
     if (!marketData?.trend_data?.length) return null;
     return (
       <ResponsiveContainer width="100%" height={250}>
@@ -50,6 +50,7 @@ const MarketTrends = ({ t }) => {
       </ResponsiveContainer>
     );
   };
+
 
   const fetchCrops = async () => {
     try {
@@ -213,16 +214,15 @@ const MarketTrends = ({ t }) => {
   return icons[cropName] || '🌱';
 };
 
-
-  return (
+return (
     <div className={styles.marketContainer}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Market Trends & Analysis</h1>
+        <h1 className={styles.title}>{t('marketTrends.title')}</h1>
         <button 
           className={`${styles.modeToggle} ${chatMode ? styles.active : ''}`}
           onClick={toggleChatMode}
         >
-          {chatMode ? '📊 Quick Analysis' : '💬 Chat Mode'}
+          {chatMode ? `📊 ${t('marketTrends.quickAnalysis')}` : `💬 ${t('marketTrends.chatMode')}`}
         </button>
       </div>
 
@@ -230,7 +230,7 @@ const MarketTrends = ({ t }) => {
         <>
           {/* Location Selection */}
           <div className={styles.locationSection}>
-            <h3>Select Market Location</h3>
+            <h3>{t('marketTrends.selectLocation')}</h3>
             <div className={styles.locationGrid}>
               {locations.map((location, index) => (
                 <button
@@ -250,7 +250,7 @@ const MarketTrends = ({ t }) => {
 
           {/* Crop Selection */}
           <div className={styles.cropSection}>
-            <h3>Select Crop for Analysis</h3>
+            <h3>{t('marketTrends.selectCrop')}</h3>
             <div className={styles.cropGrid}>
               {crops.map((crop, index) => (
                 <div
@@ -272,68 +272,81 @@ const MarketTrends = ({ t }) => {
           </div>
 
           {loading && (
-            <div className={styles.loading}><div className={styles.spinner}></div><p>Analyzing market trends...</p></div>
+            <div className={styles.loading}><div className={styles.spinner}></div><p>{t('marketTrends.loadingText')}</p></div>
           )}
 
-          {marketData && !loading && (
-            <div className={styles.resultsSection}>
-              <div className={styles.resultsHeader}>
-                <h3>Market Analysis: {marketData.crop}</h3>
-                <span className={styles.location}>📍 {marketData.location}</span>
-              </div>
+          // In your results section where you display market data, modify it like this:
+{marketData && !loading && (
+  <div className={styles.resultsSection}>
+    <div className={styles.resultsHeader}>
+      <h3>{t('marketTrends.marketAnalysis')}: {marketData.crop}</h3>
+      <span className={styles.location}>📍 {marketData.location}</span>
+    </div>
 
-              <div className={styles.analysisGrid}>
-                <div className={styles.analysisCard}>
-                  <h4>Market Analysis</h4>
-                  <div className={styles.analysisContent}>
-                    {typeof marketData.market_analysis === 'string' ? (
-                      <p>{marketData.market_analysis}</p>
-                    ) : (
-                      <div className={styles.marketDetails}>
-                        <p><strong>Current Price:</strong> ₹{marketData.market_analysis.current_price}</p>
-                        <p><strong>Average Price:</strong> ₹{marketData.market_analysis.average_price}</p>
-                        <p><strong>Price Volatility:</strong> {marketData.market_analysis.price_volatility}</p>
-                        <p><strong>Trend:</strong> {marketData.market_analysis.trend}</p>
-                        {marketData.market_analysis.price_range && (
-                          <p><strong>Price Range:</strong> ₹{marketData.market_analysis.price_range.min ?? 'N/A'} – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {renderPriceChart()}
-                </div>
-
-                <div className={styles.recommendationsCard}>
-                  <h4>Recommendations</h4>
-                  <ul className={styles.recommendationsList}>
-                    {marketData.recommendations.map((rec, index) => (
-                      <li key={index}>💡 {rec}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+    <div className={styles.analysisGrid}>
+      <div className={styles.analysisCard}>
+        <h4>{t('marketTrends.marketAnalysis')}</h4>
+        <div className={styles.analysisContent}>
+          {!marketData.market_analysis ? (
+            <p>{t('marketTrends.fallbackMessages.noData')}</p>
+          ) : typeof marketData.market_analysis === 'string' ? (
+            <p>{marketData.market_analysis}</p>
+          ) : (
+            <div className={styles.marketDetails}>
+              <p><strong>{t('marketTrends.currentPrice')}:</strong> 
+                ₹{marketData.market_analysis.current_price ?? 'N/A'}
+              </p>
+              <p><strong>{t('marketTrends.averagePrice')}:</strong> 
+                ₹{marketData.market_analysis.average_price ?? 'N/A'}
+              </p>
+              <p><strong>{t('marketTrends.priceVolatility')}:</strong> 
+                {marketData.market_analysis.price_volatility ?? 'N/A'}
+              </p>
+              <p><strong>{t('marketTrends.trend')}:</strong> 
+                {marketData.market_analysis.trend ?? 'N/A'}
+              </p>
+              {marketData.market_analysis.price_range && (
+                <p><strong>{t('marketTrends.priceRange')}:</strong> 
+                  ₹{marketData.market_analysis.price_range.min ?? 'N/A'} – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}
+                </p>
+              )}
             </div>
           )}
+        </div>
+        {renderPriceChart()}
+      </div>
+
+      <div className={styles.recommendationsCard}>
+        <h4>{t('marketTrends.recommendations')}</h4>
+        <ul className={styles.recommendationsList}>
+          {(marketData.recommendations || t('marketTrends.recommendationDefaults', { returnObjects: true })).map((rec, index) => (
+            <li key={index}>💡 {rec}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+)}
         </>
       ) : (
         <div className={styles.chatSection}>
           <div className={styles.chatContainer} ref={chatContainerRef}>
             {chatMessages.length === 0 && (
               <div className={styles.chatWelcome}>
-                <h3>Ask me about market trends!</h3>
+                <h3>{t('marketTrends.chat.welcome')}</h3>
                 <ul>
-                  <li>"What's the current price of rice in Bangalore?"</li>
-                  <li>"Should I sell my tomatoes now or wait?"</li>
-                  <li>"What crops are performing well this season?"</li>
+                  {t('marketTrends.chat.examples', { returnObjects: true }).map((example, index) => (
+                    <li key={index}>"{example}"</li>
+                  ))}
                 </ul>
               </div>
             )}
             {chatMessages.map((message, index) => (
               <div key={index} className={`${styles.message} ${styles[message.role]}`}>
                 <div
-  className={styles.messageContent}
-  dangerouslySetInnerHTML={{ __html: message.content }}
-></div>
+                  className={styles.messageContent}
+                  dangerouslySetInnerHTML={{ __html: message.content }}
+                ></div>
               </div>
             ))}
           </div>
@@ -343,10 +356,10 @@ const MarketTrends = ({ t }) => {
               type="text"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Ask about market trends, prices, or farming advice..."
+              placeholder={t('marketTrends.chat.placeholder')}
               onKeyDown={(e) => e.key === 'Enter' && sendChatMessage()}
             />
-            <button onClick={sendChatMessage} disabled={!chatInput.trim()}>Send</button>
+            <button onClick={sendChatMessage} disabled={!chatInput.trim()}>{t('marketTrends.chat.send')}</button>
           </div>
         </div>
       )}
