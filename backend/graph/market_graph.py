@@ -79,3 +79,4 @@ class MarketPredictionGraph:
     async def run(self, initial_state: MarketAgentState) -> MarketAgentState:
         """Run the graph with initial state."""
         return await self.graph.ainvoke(initial_state)
+    

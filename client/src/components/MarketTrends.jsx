@@ -28,6 +28,7 @@ const MarketTrends = ({ t }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [sessionId] = useState(`market_session_${Date.now()}`);
+  const [currentLanguage, setCurrentLanguage] = useState('english'); // New state for language
   const chatContainerRef = useRef(null);
 
   // Fetch initial data
@@ -36,8 +37,7 @@ const MarketTrends = ({ t }) => {
     fetchLocations();
   }, []);
 
-
- const renderPriceChart = () => {
+  const renderPriceChart = () => {
     if (!marketData?.trend_data?.length) return null;
     return (
       <ResponsiveContainer width="100%" height={250}>
@@ -50,7 +50,6 @@ const MarketTrends = ({ t }) => {
       </ResponsiveContainer>
     );
   };
-
 
   const fetchCrops = async () => {
     try {
@@ -100,9 +99,8 @@ const MarketTrends = ({ t }) => {
         },
         body: JSON.stringify({
           crop: crop.name,
-          market: location.name ,
+          market: location.name,
           state: location.state
-          
         })
       });
 
@@ -146,7 +144,12 @@ const MarketTrends = ({ t }) => {
     setChatInput('');
 
     try {
-      const response = await fetch('http://localhost:8000/market/chat', {
+      // Use different endpoint based on language
+      const endpoint = currentLanguage === 'kannada' 
+        ? 'http://localhost:8000/market/kannada/chat'
+        : 'http://localhost:8000/market/chat';
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +161,18 @@ const MarketTrends = ({ t }) => {
       });
 
       const data = await response.json();
-      const aiMessage = { role: 'assistant', content: data.response };
+      
+      // Extract the appropriate language response
+      let responseContent;
+      if (currentLanguage === 'kannada' && data.kannada) {
+        responseContent = data.kannada;
+      } else if (currentLanguage === 'english' && data.english) {
+        responseContent = data.english;
+      } else {
+        responseContent = data.response || data.english || data.kannada;
+      }
+
+      const aiMessage = { role: 'assistant', content: responseContent };
       setChatMessages(prev => [...prev, aiMessage]);
 
       // Update market data if available
@@ -167,7 +181,12 @@ const MarketTrends = ({ t }) => {
       }
     } catch (error) {
       console.error('Chat error:', error);
-      const errorMessage = { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' };
+      const errorMessage = { 
+        role: 'assistant', 
+        content: currentLanguage === 'kannada' 
+          ? 'ಕ್ಷಮಿಸಿ, ದೋಷ ಸಂಭವಿಸಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.' 
+          : 'Sorry, I encountered an error. Please try again.'
+      };
       setChatMessages(prev => [...prev, errorMessage]);
     }
   };
@@ -180,6 +199,10 @@ const MarketTrends = ({ t }) => {
     }
   };
 
+  const toggleLanguage = () => {
+    setCurrentLanguage(prev => prev === 'english' ? 'kannada' : 'english');
+  };
+
   // Auto-scroll chat
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -188,49 +211,111 @@ const MarketTrends = ({ t }) => {
   }, [chatMessages]);
 
   const getCropIcon = (cropName) => {
-  const icons = {
-    Rice: '🍚',
-    Wheat: '🌾',
-    Maize: '🌽',
-    Sugarcane: '🍬',
-    Cotton: '🧵',
-    Tomato: '🍅',
-    Onion: '🧅',
-    Potato: '🥔',
-    Chili: '🌶️',
-    Banana: '🍌',
-    Mango: '🥭',
-    Grapes: '🍇',
-    Orange: '🍊',
-    Lemon: '🍋',
-    Apple: '🍎',
-    Coconut: '🥥',
-    Groundnut: '🥜',
-    Turmeric: '🟡',
-    Ginger: '🫚',
-    Garlic: '🧄'
+    const icons = {
+      Rice: '🍚',
+      Wheat: '🌾',
+      Maize: '🌽',
+      Sugarcane: '🍬',
+      Cotton: '🧵',
+      Tomato: '🍅',
+      Onion: '🧅',
+      Potato: '🥔',
+      Chili: '🌶️',
+      Banana: '🍌',
+      Mango: '🥭',
+      Grapes: '🍇',
+      Orange: '🍊',
+      Lemon: '🍋',
+      Apple: '🍎',
+      Coconut: '🥥',
+      Groundnut: '🥜',
+      Turmeric: '🟡',
+      Ginger: '🫚',
+      Garlic: '🧄'
+    };
+
+    return icons[cropName] || '🌱';
   };
 
-  return icons[cropName] || '🌱';
-};
+  // Language-specific text
+  const getText = (key) => {
+    const texts = {
+      english: {
+        title: 'Market Trends',
+        quickAnalysis: 'Quick Analysis',
+        chatMode: 'Chat Mode',
+        selectLocation: 'Select Location',
+        selectCrop: 'Select Crop',
+        loadingText: 'Loading market data...',
+        marketAnalysis: 'Market Analysis',
+        currentPrice: 'Current Price',
+        averagePrice: 'Average Price',
+        priceVolatility: 'Price Volatility',
+        trend: 'Trend',
+        priceRange: 'Price Range',
+        recommendations: 'Recommendations',
+        chatWelcome: 'Ask me anything about market trends!',
+        chatPlaceholder: 'Ask about crop prices, trends, or market advice...',
+        send: 'Send',
+        voiceChat: '🎤 Voice',
+        noData: 'No market data available at the moment.',
+        language: 'ಕನ್ನಡ'
+      },
+      kannada: {
+        title: 'ಮಾರುಕಟ್ಟೆ ಪ್ರವೃತ್ತಿಗಳು',
+        quickAnalysis: 'ತ್ವರಿತ ವಿಶ್ಲೇಷಣೆ',
+        chatMode: 'ಚಾಟ್ ಮೋಡ್',
+        selectLocation: 'ಸ್ಥಳ ಆಯ್ಕೆ ಮಾಡಿ',
+        selectCrop: 'ಬೆಳೆ ಆಯ್ಕೆ ಮಾಡಿ',
+        loadingText: 'ಮಾರುಕಟ್ಟೆ ಮಾಹಿತಿ ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+        marketAnalysis: 'ಮಾರುಕಟ್ಟೆ ವಿಶ್ಲೇಷಣೆ',
+        currentPrice: 'ಪ್ರಸ್ತುತ ಬೆಲೆ',
+        averagePrice: 'ಸರಾಸರಿ ಬೆಲೆ',
+        priceVolatility: 'ಬೆಲೆ ಏರಿಳಿತ',
+        trend: 'ಪ್ರವೃತ್ತಿ',
+        priceRange: 'ಬೆಲೆ ವ್ಯಾಪ್ತಿ',
+        recommendations: 'ಸಲಹೆಗಳು',
+        chatWelcome: 'ಮಾರುಕಟ್ಟೆ ಪ್ರವೃತ್ತಿಗಳ ಬಗ್ಗೆ ಏನಾದರೂ ಕೇಳಿ!',
+        chatPlaceholder: 'ಬೆಳೆ ಬೆಲೆಗಳು, ಪ್ರವೃತ್ತಿಗಳು ಅಥವಾ ಮಾರುಕಟ್ಟೆ ಸಲಹೆಯ ಬಗ್ಗೆ ಕೇಳಿ...',
+        send: 'ಕಳುಹಿಸಿ',
+        voiceChat: '🎤 ಧ್ವನಿ',
+        noData: 'ಈ ಸಮಯದಲ್ಲಿ ಮಾರುಕಟ್ಟೆ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ.',
+        language: 'English'
+      }
+    };
 
-return (
+    return texts[currentLanguage][key] || key;
+  };
+
+  return (
     <div className={styles.marketContainer}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{t('marketTrends.title')}</h1>
-        <button 
-          className={`${styles.modeToggle} ${chatMode ? styles.active : ''}`}
-          onClick={toggleChatMode}
-        >
-          {chatMode ? `📊 ${t('marketTrends.quickAnalysis')}` : `💬 ${t('marketTrends.chatMode')}`}
-        </button>
+        <h1 className={styles.title}>{getText('title')}</h1>
+        <div className={styles.headerControls}>
+          {/* Language Toggle */}
+          <button 
+            className={`${styles.modeToggle} ${currentLanguage === 'kannada' ? styles.active : ''}`}
+            onClick={toggleLanguage}
+            title={currentLanguage === 'english' ? 'Switch to Kannada' : 'Switch to English'}
+          >
+            🌐 {getText('language')}
+          </button>
+          
+          {/* Mode Toggle */}
+          <button 
+            className={`${styles.modeToggle} ${chatMode ? styles.active : ''}`}
+            onClick={toggleChatMode}
+          >
+            {chatMode ? `📊 ${getText('quickAnalysis')}` : `💬 ${getText('chatMode')}`}
+          </button>
+        </div>
       </div>
 
       {!chatMode ? (
         <>
           {/* Location Selection */}
           <div className={styles.locationSection}>
-            <h3>{t('marketTrends.selectLocation')}</h3>
+            <h3>{getText('selectLocation')}</h3>
             <div className={styles.locationGrid}>
               {locations.map((location, index) => (
                 <button
@@ -250,7 +335,7 @@ return (
 
           {/* Crop Selection */}
           <div className={styles.cropSection}>
-            <h3>{t('marketTrends.selectCrop')}</h3>
+            <h3>{getText('selectCrop')}</h3>
             <div className={styles.cropGrid}>
               {crops.map((crop, index) => (
                 <div
@@ -262,8 +347,12 @@ return (
                     {getCropIcon(crop.name)}
                   </div>
                   <div className={styles.cropInfo}>
-                    <h4 className={styles.cropName}>{crop.name}</h4>
-                    <p className={styles.cropLocalName}>{crop.local_name}</p>
+                    <h4 className={styles.cropName}>
+                      {currentLanguage === 'kannada' ? crop.local_name : crop.name}
+                    </h4>
+                    <p className={styles.cropLocalName}>
+                      {currentLanguage === 'kannada' ? crop.name : crop.local_name}
+                    </p>
                     <span className={styles.cropSeason}>{crop.season}</span>
                   </div>
                 </div>
@@ -272,72 +361,74 @@ return (
           </div>
 
           {loading && (
-            <div className={styles.loading}><div className={styles.spinner}></div><p>{t('marketTrends.loadingText')}</p></div>
-          )}
-
-          // In your results section where you display market data, modify it like this:
-{marketData && !loading && (
-  <div className={styles.resultsSection}>
-    <div className={styles.resultsHeader}>
-      <h3>{t('marketTrends.marketAnalysis')}: {marketData.crop}</h3>
-      <span className={styles.location}>📍 {marketData.location}</span>
-    </div>
-
-    <div className={styles.analysisGrid}>
-      <div className={styles.analysisCard}>
-        <h4>{t('marketTrends.marketAnalysis')}</h4>
-        <div className={styles.analysisContent}>
-          {!marketData.market_analysis ? (
-            <p>{t('marketTrends.fallbackMessages.noData')}</p>
-          ) : typeof marketData.market_analysis === 'string' ? (
-            <p>{marketData.market_analysis}</p>
-          ) : (
-            <div className={styles.marketDetails}>
-              <p><strong>{t('marketTrends.currentPrice')}:</strong> 
-                ₹{marketData.market_analysis.current_price ?? 'N/A'}
-              </p>
-              <p><strong>{t('marketTrends.averagePrice')}:</strong> 
-                ₹{marketData.market_analysis.average_price ?? 'N/A'}
-              </p>
-              <p><strong>{t('marketTrends.priceVolatility')}:</strong> 
-                {marketData.market_analysis.price_volatility ?? 'N/A'}
-              </p>
-              <p><strong>{t('marketTrends.trend')}:</strong> 
-                {marketData.market_analysis.trend ?? 'N/A'}
-              </p>
-              {marketData.market_analysis.price_range && (
-                <p><strong>{t('marketTrends.priceRange')}:</strong> 
-                  ₹{marketData.market_analysis.price_range.min ?? 'N/A'} – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}
-                </p>
-              )}
+            <div className={styles.loading}>
+              <div className={styles.spinner}></div>
+              <p>{getText('loadingText')}</p>
             </div>
           )}
-        </div>
-        {renderPriceChart()}
-      </div>
 
-      <div className={styles.recommendationsCard}>
-        <h4>{t('marketTrends.recommendations')}</h4>
-        <ul className={styles.recommendationsList}>
-          {(marketData.recommendations || t('marketTrends.recommendationDefaults', { returnObjects: true })).map((rec, index) => (
-            <li key={index}>💡 {rec}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </div>
-)}
+          {marketData && !loading && (
+            <div className={styles.resultsSection}>
+              <div className={styles.resultsHeader}>
+                <h3>{getText('marketAnalysis')}: {currentLanguage === 'kannada' ? selectedCrop?.local_name : marketData.crop}</h3>
+                <span className={styles.location}>📍 {marketData.location}</span>
+              </div>
+
+              <div className={styles.analysisGrid}>
+                <div className={styles.analysisCard}>
+                  <h4>{getText('marketAnalysis')}</h4>
+                  <div className={styles.analysisContent}>
+                    {!marketData.market_analysis ? (
+                      <p>{getText('noData')}</p>
+                    ) : typeof marketData.market_analysis === 'string' ? (
+                      <p>{marketData.market_analysis}</p>
+                    ) : (
+                      <div className={styles.marketDetails}>
+                        <p><strong>{getText('currentPrice')}:</strong> 
+                          ₹{marketData.market_analysis.current_price ?? 'N/A'}
+                        </p>
+                        <p><strong>{getText('averagePrice')}:</strong> 
+                          ₹{marketData.market_analysis.average_price ?? 'N/A'}
+                        </p>
+                        <p><strong>{getText('priceVolatility')}:</strong> 
+                          {marketData.market_analysis.price_volatility ?? 'N/A'}
+                        </p>
+                        <p><strong>{getText('trend')}:</strong> 
+                          {marketData.market_analysis.trend ?? 'N/A'}
+                        </p>
+                        {marketData.market_analysis.price_range && (
+                          <p><strong>{getText('priceRange')}:</strong> 
+                            ₹{marketData.market_analysis.price_range.min ?? 'N/A'} – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {renderPriceChart()}
+                </div>
+
+                <div className={styles.recommendationsCard}>
+                  <h4>{getText('recommendations')}</h4>
+                  <ul className={styles.recommendationsList}>
+                    {(marketData.recommendations || ['Check local market conditions', 'Monitor price trends', 'Consult with local traders']).map((rec, index) => (
+                      <li key={index}>💡 {rec}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       ) : (
         <div className={styles.chatSection}>
           <div className={styles.chatContainer} ref={chatContainerRef}>
             {chatMessages.length === 0 && (
               <div className={styles.chatWelcome}>
-                <h3>{t('marketTrends.chat.welcome')}</h3>
+                <h3>{getText('chatWelcome')}</h3>
                 <ul>
-                  {t('marketTrends.chat.examples', { returnObjects: true }).map((example, index) => (
-                    <li key={index}>"{example}"</li>
-                  ))}
+                  <li>"{currentLanguage === 'kannada' ? 'ಅಕ್ಕಿಯ ಬೆಲೆ ಎಷ್ಟು?' : 'What is the current price of rice?'}"</li>
+                  <li>"{currentLanguage === 'kannada' ? 'ಟೊಮಾಟೊ ಬೆಲೆ ಏರುತ್ತಿದೆಯೇ?' : 'Are tomato prices increasing?'}"</li>
+                  <li>"{currentLanguage === 'kannada' ? 'ಈ ತಿಂಗಳು ಯಾವ ಬೆಳೆ ಉತ್ತಮ?' : 'Which crop is best this month?'}"</li>
                 </ul>
               </div>
             )}
@@ -356,10 +447,22 @@ return (
               type="text"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
-              placeholder={t('marketTrends.chat.placeholder')}
+              placeholder={getText('chatPlaceholder')}
               onKeyDown={(e) => e.key === 'Enter' && sendChatMessage()}
             />
-            <button onClick={sendChatMessage} disabled={!chatInput.trim()}>{t('marketTrends.chat.send')}</button>
+            <button 
+              className={styles.voiceChatButton}
+              title={getText('voiceChat')}
+            >
+              {getText('voiceChat')}
+            </button>
+            <button 
+              onClick={sendChatMessage} 
+              disabled={!chatInput.trim()}
+              className={styles.sendButton}
+            >
+              {getText('send')}
+            </button>
           </div>
         </div>
       )}

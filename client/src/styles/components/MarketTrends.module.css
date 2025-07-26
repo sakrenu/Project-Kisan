@@ -463,4 +463,157 @@
   .chatInput button {
     min-width: auto;
   }
+
+  /* Language and Voice Controls */
+.controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.languageToggle {
+  display: flex;
+  gap: 8px;
+  background: #f5f5f5;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+.langButton {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 15px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.langButton.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.voiceOutput {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.speakButton {
+  padding: 8px 12px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.speakButton:hover {
+  background: #e0e0e0;
+}
+
+.speakButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Chat Input Styling */
+.chatButtons {
+  display: flex;
+  gap: 5px;
+}
+
+.voiceButton {
+  padding: 10px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.voiceButton:hover {
+  background: #e0e0e0;
+}
+
+.voiceButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.listeningPulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.sendButton {
+  padding: 10px 15px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sendButton:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+.headerControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.languageToggle {
+  padding: 8px 16px;
+  border: 2px solid #007bff;
+  background: white;
+  color: #007bff;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.languageToggle:hover {
+  background: #007bff;
+  color: white;
+}
+
+.languageToggle.kannada {
+  border-color: #ff6b35;
+  color: #ff6b35;
+}
+
+.languageToggle.kannada:hover {
+  background: #ff6b35;
+  color: white;
+}
+
+.voiceChatButton {
+  padding: 10px 15px;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.sendButton {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 }

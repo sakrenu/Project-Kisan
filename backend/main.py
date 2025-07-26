@@ -7,6 +7,9 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from agents.plant_disease_agent import run_plant_agent
 import uvicorn
+# Add these new imports at top
+from agents.kannada_agent import KannadaMarketAgent
+from utils.market_utils import KannadaVoiceProcessor
 
 # Import the market prediction components
 from graph.market_graph import MarketPredictionGraph
@@ -274,5 +277,65 @@ async def get_popular_locations():
     
     return {"locations": locations}
 
+
+
+# Initialize at app startup
+kannada_agent = KannadaMarketAgent()
+voice_processor = KannadaVoiceProcessor()
+
+# Add these new endpoints
+@app.post("/market/kannada/chat")
+async def kannada_market_chat(request: MarketChatRequest):
+    """Handle Kannada text queries about market trends"""
+    try:
+        # First get English analysis
+        english_response = await market_chat(request)
+        
+        # Translate to Kannada
+        kannada_text = await kannada_agent.translate_to_kannada(
+            english_response.response
+        )
+        
+        return {
+            "english": english_response.response,
+            "kannada": kannada_text,
+            "session_id": request.session_id
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/market/kannada/voice")
+async def kannada_voice_query(
+    audio: UploadFile = File(...),
+    session_id: str = Form(...)
+):
+    """Handle Kannada voice queries"""
+    try:
+        # Step 1: Convert speech to text
+        kannada_text = await voice_processor.transcribe_kannada(audio)
+        
+        # Step 2: Process as text query
+        chat_request = MarketChatRequest(
+            message=kannada_text,
+            session_id=session_id
+        )
+        response = await kannada_market_chat(chat_request)
+        
+        # Step 3: Convert response to speech
+        audio_response = voice_processor.text_to_speech(response["kannada"])
+        
+        return {
+            "transcribed_text": kannada_text,
+            "text_response": response["kannada"],
+            "audio_response": audio_response,
+            "session_id": session_id
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+
