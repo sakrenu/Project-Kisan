@@ -1,0 +1,81 @@
+.card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+  .card input,
+  .card textarea,
+  .card select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .card button {
+    padding: 0.8rem;
+    background-color: #007b5e;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .card button:hover {
+    background-color: #005f47;
+  }
+  
+  .results {
+    margin-top: 1.5rem;
+    background-color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .results h3,
+  .results h4 {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .results p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* 📱 Mobile Optimizations */
+  @media (max-width: 600px) {
+    .card {
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+  
+    .card button,
+    .card input,
+    .card select,
+    .card textarea {
+      font-size: 0.95rem;
+    }
+  
+    .results {
+      font-size: 0.95rem;
+    }
+  }
+  
