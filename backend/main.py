@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict
 from langchain_core.messages import HumanMessage, AIMessage
+from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
+from agents.plant_disease_agent import run_plant_agent
+import uvicorn
 
 # Import the market prediction components
 from graph.market_graph import MarketPredictionGraph
