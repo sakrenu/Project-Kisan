@@ -1,0 +1,65 @@
+.formCard {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.formCard input,
+.formCard textarea,
+.formCard select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.formCard button {
+  padding: 0.75rem;
+  background-color: #007b5e;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.resultBox {
+  background: #f4f8f9;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #e0e0e0;
+}
+
+.resultBox h3,
+.resultBox h4 {
+  margin-top: 1rem;
+  color: #005f47;
+}
+
+@media (max-width: 600px) {
+  .formCard {
+    padding: 1rem;
+  }
+
+  .formCard input,
+  .formCard textarea,
+  .formCard select,
+  .formCard button {
+    font-size: 0.95rem;
+  }
+
+  .resultBox {
+    font-size: 0.95rem;
+  }
+}
