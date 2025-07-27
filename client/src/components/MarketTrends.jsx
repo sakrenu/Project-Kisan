@@ -385,20 +385,20 @@ const MarketTrends = ({ t }) => {
                     ) : (
                       <div className={styles.marketDetails}>
                         <p><strong>{getText('currentPrice')}:</strong> 
-                          ₹{marketData.market_analysis.current_price ?? 'N/A'}
+                          ₹{marketData.market_analysis.current_price ?? 'N/A'}/100kg
                         </p>
                         <p><strong>{getText('averagePrice')}:</strong> 
-                          ₹{marketData.market_analysis.average_price ?? 'N/A'}
+                          ₹{marketData.market_analysis.average_price ?? 'N/A'}/100kg
                         </p>
                         <p><strong>{getText('priceVolatility')}:</strong> 
-                          {marketData.market_analysis.price_volatility ?? 'N/A'}
+                          {marketData.market_analysis.price_volatility ?? 'N/A'}/100kg
                         </p>
                         <p><strong>{getText('trend')}:</strong> 
                           {marketData.market_analysis.trend ?? 'N/A'}
                         </p>
                         {marketData.market_analysis.price_range && (
                           <p><strong>{getText('priceRange')}:</strong> 
-                            ₹{marketData.market_analysis.price_range.min ?? 'N/A'} – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}
+                            ₹{marketData.market_analysis.price_range.min ?? 'N/A'}/100kg – ₹{marketData.market_analysis.price_range.max ?? 'N/A'}/100kg
                           </p>
                         )}
                       </div>
