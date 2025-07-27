@@ -7,25 +7,24 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <div className={styles.logoContainer}>
-          <Image 
-            src="/logo.svg" 
-            alt="KrishiDost Logo" 
-            width={40} 
-            height={40} 
+          <Image
+            src="/logo.svg"
+            alt="KrishiDost Logo"
+            width={40}
+            height={40}
           />
           <h1 className={styles.appName}>
-            <span className={styles.appNamePart1}>Krishi</span>
-            <span className={styles.appNamePart2}>Dost</span>
+            <span className={styles.appNamePart1}>Project Kisan</span>
           </h1>
         </div>
-        
+
         <div className={styles.menu}>
-          <a href="#" className={styles.menuItem}>Dashboard</a>
-          <a href="#" className={styles.menuItem}>Services</a>
-          <a href="#" className={styles.menuItem}>Schemes</a>
-          <a href="#" className={styles.menuItem}>Market</a>
+          <a href="/dashboard" className={styles.menuItem}>Dashboard</a>
+          <a href="/dashboard" className={styles.menuItem}>Services</a>
+          <a href="/scheme-navigator" className={styles.menuItem}>Schemes</a>
+          <a href="/market-trends" className={styles.menuItem}>Market</a>
         </div>
-        
+
         <div className={styles.userActions}>
           <button className={styles.iconButton}>
             <FaBell size={20} />
