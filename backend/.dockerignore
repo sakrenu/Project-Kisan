@@ -1,0 +1,20 @@
+# Ignore version control
+.git
+.gitignore
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore local builds and artifacts
+*.log
+*.tmp
+*.bak
+venv/
+build/
+dist/
+
+# Ignore large datasets or folders
+data/
+datasets/
+node_modules/

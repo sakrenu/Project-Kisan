@@ -1,8 +1,10 @@
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv
 
 # Environment setup
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+load_dotenv()
+# Assumes GOOGLE_API_KEY is set in your .env file
 
 def get_gemini_model(temperature: float = 0.3):
     """Get configured Gemini model instance."""

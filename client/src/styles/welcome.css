@@ -1,0 +1,584 @@
+/* Welcome Page Styles - welcome.css */
+
+/* PWA Optimizations */
+.welcome-page {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile PWAs */
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdfa 100%) !important;
+  position: relative;
+  overflow: hidden;
+  /* PWA safe areas for notched devices */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Prevent zoom on form elements for PWA */
+input, button, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Touch optimization for PWA */
+.welcome-cta-button,
+.welcome-feature-card,
+.welcome-logo-circle {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Better touch targets for PWA (minimum 44px) */
+.welcome-cta-button {
+  min-height: 56px;
+  touch-action: manipulation;
+}
+
+/* Reduce animations on low-power devices */
+@media (prefers-reduced-motion: reduce) {
+  .welcome-bg-blob,
+  .welcome-float-element,
+  .welcome-logo-glow {
+    animation: none;
+  }
+  
+  .welcome-feature-card,
+  .welcome-cta-button,
+  .welcome-logo-circle {
+    transition: none;
+  }
+}
+
+/* Override any background images */
+.welcome-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdfa 100%);
+  z-index: 1;
+}
+
+.welcome-page > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Background Animation Elements */
+.welcome-bg-blob {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  filter: blur(40px);
+  opacity: 0.7;
+  animation: blob-animation 7s infinite;
+  z-index: 3;
+}
+
+.welcome-bg-blob-1 {
+  top: -160px;
+  right: -160px;
+  background-color: #bbf7d0;
+}
+
+.welcome-bg-blob-2 {
+  bottom: -160px;
+  left: -160px;
+  background-color: #a7f3d0;
+  animation-delay: 2s;
+}
+
+.welcome-bg-blob-3 {
+  top: 160px;
+  left: 160px;
+  background-color: #99f6e4;
+  animation-delay: 4s;
+}
+
+/* Floating Farm Elements */
+.welcome-float-element {
+  position: absolute;
+  font-size: 2rem;
+  animation: bounce-animation 2s infinite;
+  z-index: 4;
+}
+
+.welcome-float-1 {
+  top: 80px;
+  left: 40px;
+  font-size: 2.5rem;
+  animation-delay: 1s;
+}
+
+.welcome-float-2 {
+  top: 160px;
+  right: 80px;
+  font-size: 1.875rem;
+  animation-delay: 2s;
+}
+
+.welcome-float-3 {
+  bottom: 160px;
+  left: 80px;
+  font-size: 1.875rem;
+  animation-delay: 3s;
+}
+
+.welcome-float-4 {
+  bottom: 80px;
+  right: 160px;
+  font-size: 2.5rem;
+  animation-delay: 4s;
+}
+
+/* Main Container */
+.welcome-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  min-height: 100vh;
+  min-height: 100dvh; /* PWA dynamic viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* PWA scroll behavior */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.welcome-content {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.welcome-content.animating {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+/* Logo Section */
+.welcome-logo {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.welcome-logo-circle {
+  width: 128px;
+  height: 128px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+  font-size: 3rem;
+}
+
+.welcome-logo-circle:hover {
+  transform: scale(1.05);
+}
+
+.welcome-logo-glow {
+  position: absolute;
+  inset: -16px;
+  background: linear-gradient(45deg, #10b981, #059669);
+  border-radius: 50%;
+  filter: blur(16px);
+  opacity: 0.3;
+  animation: pulse-animation 2s infinite;
+}
+
+/* Title */
+.welcome-title {
+  font-size: 3.75rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #059669, #10b981, #0d9488);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  animation: fade-in-animation 1s ease-out;
+  position: relative;
+  z-index: 10;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Fallback for browsers that don't support background-clip */
+@supports not (-webkit-background-clip: text) {
+  .welcome-title {
+    color: #059669;
+  }
+}
+
+/* Subtitle */
+.welcome-subtitle {
+  font-size: 1.25rem;
+  color: #374151 !important;
+  margin-bottom: 32px;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.75;
+  animation: fade-in-delay-animation 1s ease-out 0.3s both;
+  position: relative;
+  z-index: 10;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Features Grid */
+.welcome-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+  max-width: 896px;
+  width: 100%;
+  z-index: 10;
+  position: relative;
+}
+
+.welcome-feature-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-feature-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-8px);
+}
+
+.welcome-feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.welcome-feature-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.welcome-feature-text {
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* CTA Button */
+.welcome-cta-button {
+  position: relative;
+  padding: 16px 48px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(45deg, #10b981, #059669);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.welcome-cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+}
+
+.welcome-cta-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, #059669, #047857);
+  border-radius: 50px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.welcome-cta-button:hover::before {
+  opacity: 1;
+}
+
+.welcome-cta-text {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-cta-arrow {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.welcome-cta-button:hover .welcome-cta-arrow {
+  transform: translateX(4px);
+}
+
+/* Trust Indicators */
+.welcome-trust {
+  margin-top: 48px;
+}
+
+.welcome-trust-title {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.welcome-trust-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  flex-wrap: wrap;
+}
+
+.welcome-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcome-trust-check {
+  color: #10b981;
+}
+
+/* Footer */
+.welcome-footer {
+  margin-top: 64px;
+  text-align: center;
+}
+
+.welcome-footer-main {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.welcome-footer-details {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+.welcome-footer-accent {
+  color: #059669 !important;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes blob-animation {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes bounce-animation {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -10px, 0);
+  }
+  70% {
+    transform: translate3d(0, -5px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes pulse-animation {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-in-animation {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-delay-animation {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design - PWA Optimized */
+@media (max-width: 768px) {
+  .welcome-page {
+    padding-top: max(env(safe-area-inset-top), 20px);
+    padding-bottom: max(env(safe-area-inset-bottom), 20px);
+  }
+  
+  .welcome-container {
+    padding: 24px 16px;
+    min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  
+  .welcome-title {
+    font-size: 2.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .welcome-features {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .welcome-cta-button {
+    padding: 14px 36px;
+    font-size: 1.125rem;
+    min-height: 52px;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .welcome-trust-items {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .welcome-float-element {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-float-1,
+  .welcome-float-4 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-container {
+    padding: 16px 12px;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+  
+  .welcome-logo-circle {
+    width: 96px;
+    height: 96px;
+    font-size: 2.5rem;
+  }
+  
+  .welcome-features {
+    margin-bottom: 32px;
+  }
+  
+  .welcome-feature-card {
+    padding: 20px;
+  }
+  
+  .welcome-cta-button {
+    font-size: 1rem;
+    padding: 12px 24px;
+    min-height: 48px;
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+/* Landscape orientation adjustments for PWA */
+@media (max-height: 500px) and (orientation: landscape) {
+  .welcome-container {
+    padding: 20px 24px;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-features {
+    margin-bottom: 24px;
+  }
+  
+  .welcome-logo {
+    margin-bottom: 16px;
+  }
+  
+  .welcome-logo-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+}
+
+/* High DPI displays optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .welcome-feature-card {
+    border: 0.5px solid rgba(255, 255, 255, 0.3);
+  }
+}
