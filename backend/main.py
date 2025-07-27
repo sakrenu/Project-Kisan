@@ -11,6 +11,10 @@ from agents.plant_disease_agent import run_plant_agent
 from graph.crop_graph import build_crop_graph
 from routes import gemini_convo_agent  # ✅ only after routes folder is added
 import uvicorn
+from typing import Optional, List, Dict, Any
+import logging
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 # Add these new imports at top
 from agents.kannada_agent import KannadaMarketAgent
 # from utils.market_utils import KannadaVoiceProcessor
@@ -21,6 +25,17 @@ from agents.market_agent import MarketAgentState
 from utils.market_utils import VoiceProcessor
 
 from utils.market_utils import MarketDataFetcher, PriceAnalyzer
+
+# Add these imports after your existing imports
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+
+# Import your RAG system
+from rag import VertexAIRAG
+
+
+PROJECT_ID = "project1-ba76a"  # Your actual project ID
+JSON_FILE_PATH = "schemes.json"  # Path to your JSON file with schemes
 
 app = FastAPI()
 
@@ -368,6 +383,218 @@ async def kannada_voice_query(
             "audio_response": audio_response,
             "session_id": session_id
         }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Pydantic models for RAG endpoints
+class RAGChatRequest(BaseModel):
+    message: str
+    session_id: Optional[str] = "default"
+
+class RAGChatResponse(BaseModel):
+    answer: str
+    session_id: str
+    schemes_found: List[Dict[str, str]]
+    confidence_score: Optional[float] = None
+
+class RAGSearchByStateRequest(BaseModel):
+    state: str
+    limit: Optional[int] = 5
+
+# Global RAG system instance
+rag_system = None
+executor = ThreadPoolExecutor(max_workers=2)
+
+# Initialize RAG system at startup
+@app.on_event("startup")
+async def initialize_rag():
+    """Initialize RAG system when the app starts."""
+    global rag_system
+    try:
+        PROJECT_ID = "project1-ba76a"  # Replace with your project ID
+        JSON_FILE_PATH = "schemes.json"  # Path to your schemes data
+        
+        logger.info("Initializing RAG system...")
+        rag_system = VertexAIRAG(
+            project_id=PROJECT_ID,
+            location="us-central1"  # or try "us-east1" if models not available
+        )
+        
+        # Load and index data
+        await asyncio.get_event_loop().run_in_executor(
+            executor, 
+            rag_system.load_and_index_data, 
+            JSON_FILE_PATH, 
+            True  # force_reload=True
+        )
+        
+        logger.info("RAG system initialized successfully!")
+        
+    except Exception as e:
+        logger.error(f"Failed to initialize RAG system: {e}")
+        raise
+
+def run_rag_query(question: str) -> Dict[str, Any]:
+    """Run RAG query in thread executor."""
+    return rag_system.query(question)
+
+def search_by_state_sync(state: str, limit: int) -> List[Dict]:
+    """Search by state in thread executor."""
+    return rag_system.search_by_state(state, limit)
+
+# RAG Endpoints
+@app.post("/rag/chat", response_model=RAGChatResponse)
+async def rag_chat(request: RAGChatRequest):
+    """Handle government schemes RAG chat requests."""
+    try:
+        if rag_system is None:
+            raise HTTPException(
+                status_code=503, 
+                detail="RAG system not initialized. Please try again later."
+            )
+        
+        logger.info(f"Processing RAG query: {request.message}")
+        
+        # Run RAG query in thread executor to avoid blocking
+        result = await asyncio.get_event_loop().run_in_executor(
+            executor, 
+            run_rag_query, 
+            request.message
+        )
+        
+        return RAGChatResponse(
+            answer=result["answer"],
+            session_id=request.session_id,
+            schemes_found=result.get("schemes_found", [])
+        )
+        
+    except Exception as e:
+        logger.error(f"Error in RAG chat: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/rag/search-by-state")
+async def rag_search_by_state(request: RAGSearchByStateRequest):
+    """Search for schemes by specific state."""
+    try:
+        if rag_system is None:
+            raise HTTPException(
+                status_code=503, 
+                detail="RAG system not initialized. Please try again later."
+            )
+        
+        logger.info(f"Searching schemes for state: {request.state}")
+        
+        # Run search in thread executor
+        results = await asyncio.get_event_loop().run_in_executor(
+            executor, 
+            search_by_state_sync, 
+            request.state, 
+            request.limit
+        )
+        
+        return {
+            "state": request.state,
+            "schemes_count": len(results),
+            "schemes": results
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in state search: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/rag/health")
+async def rag_health():
+    """Health check for RAG service."""
+    if rag_system is None:
+        return {"status": "not_initialized", "service": "Government Schemes RAG"}
+    
+    return {"status": "healthy", "service": "Government Schemes RAG"}
+
+@app.post("/rag/reload-data")
+async def reload_rag_data():
+    """Reload RAG data (admin endpoint)."""
+    try:
+        if rag_system is None:
+            raise HTTPException(status_code=503, detail="RAG system not initialized")
+        
+        JSON_FILE_PATH = "schemes.json"
+        
+        # Reload data in thread executor
+        await asyncio.get_event_loop().run_in_executor(
+            executor, 
+            rag_system.load_and_index_data, 
+            JSON_FILE_PATH, 
+            True  # force_reload=True
+        )
+        
+        return {"message": "RAG data reloaded successfully"}
+        
+    except Exception as e:
+        logger.error(f"Error reloading RAG data: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Example usage endpoint - you can test with this
+@app.get("/rag/examples")
+async def rag_examples():
+    """Get example queries for testing RAG system."""
+    examples = [
+        {
+            "query": "What schemes are available for farmers in Bihar?",
+            "description": "Search for state-specific schemes"
+        },
+        {
+            "query": "Tell me about natural farming initiatives",
+            "description": "Search by scheme type"
+        },
+        {
+            "query": "What financial assistance is available for marginal farmers?",
+            "description": "Search by beneficiary type"
+        },
+        {
+            "query": "Show me schemes for sustainable agriculture",
+            "description": "Search by agriculture practice"
+        },
+        {
+            "query": "What is the Mukhyamantri Kisan Sahayata Yojana?",
+            "description": "Search for specific scheme"
+        }
+    ]
+    
+    return {"examples": examples}
+
+# Integration with your existing Kannada agent (optional)
+@app.post("/rag/kannada/chat")
+async def rag_kannada_chat(request: RAGChatRequest):
+    """Handle RAG queries with Kannada translation."""
+    try:
+        # Get RAG response in English
+        english_response = await rag_chat(request)
+        
+        # Translate to Kannada if kannada_agent is available
+        if 'kannada_agent' in globals():
+            kannada_text = await kannada_agent.translate_to_kannada(
+                english_response.answer
+            )
+            
+            return {
+                "english": english_response.answer,
+                "kannada": kannada_text,
+                "schemes_found": english_response.schemes_found,
+                "session_id": request.session_id
+            }
+        else:
+            return {
+                "english": english_response.answer,
+                "kannada": "Translation service not available",
+                "schemes_found": english_response.schemes_found,
+                "session_id": request.session_id
+            }
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
